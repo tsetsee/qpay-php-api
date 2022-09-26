@@ -5,6 +5,10 @@ namespace Qpay\Api;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleLogMiddleware\LogMiddleware;
+use Psr\Http\Message\RequestInterface;
 use Qpay\Api\DTO\AuthTokenDTO;
 use Qpay\Api\Enum\BaseUrl;
 use Qpay\Api\Enum\Env;
@@ -14,13 +18,38 @@ class QPayApi
     private Client $client;
     private ?AuthTokenDTO $authToken = null;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         private string $username,
         private string $password,
         Env $env = Env::PROD,
+        array $options = [],
     ) {
+        /** @var (callable(RequestInterface, array<string,mixed>): PromiseInterface)|null $handler */
+        $handler = $options['handler'] ?? null;
+
+        $stack = HandlerStack::create($handler);
+        $stack->push(function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                if (!empty($options['oauth2'])) {
+                    $request->withHeader('Authorization', 'Bearer '.$this->getAccessToken());
+                }
+
+                return $handler($request, $options);
+            };
+        });
+
+        if (isset($options['logger'])) {
+            $stack->push(new LogMiddleware($options['logger']));
+        }
+
+        // $stack->push(new LogMiddleware())
+
         $this->client = new Client([
             'base_uri' => (Env::PROD === $env ? BaseUrl::PROD : BaseUrl::SANDBOX)->value,
+            'handler' => $stack,
         ]);
     }
 
@@ -33,13 +62,24 @@ class QPayApi
         return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
     }
 
-    public function refreshAuthToken(): AuthTokenDTO
+    public function refreshAuthToken(string $refreshToken): AuthTokenDTO
     {
         $response = $this->client->post('auth/refresh', [
             'headers' => [
-                'Authorization' => 'Bearer '.$this->getAccessToken(),
+                'Authorization' => 'Bearer '.$refreshToken,
             ],
         ]);
+
+        return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
+    }
+
+    public function createInvoice(): AuthTokenDTO
+    {
+        $response = $this->client->post('invoice', [
+            'oauth2' => true,
+        ]);
+
+        var_dump((string) $response->getBody());
 
         return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
     }
@@ -47,8 +87,8 @@ class QPayApi
     private function getAccessToken(): string
     {
         if (!$this->isAccessTokenAlive()) {
-            if ($this->isRefreshTokenAlive()) {
-                $this->setAccessToken($this->refreshAuthToken());
+            if ($this->isRefreshTokenAlive() && $this->authToken) {
+                $this->setAccessToken($this->refreshAuthToken($this->authToken->refreshToken));
             } else {
                 $this->setAccessToken($this->getAuthToken());
             }

@@ -10,6 +10,9 @@ $config = new PhpCsFixer\Config();
 
 return $config->setRules([
         '@Symfony' => true,
+        'method_argument_space' => [
+            'on_multiline' => 'ensure_fully_multiline',
+        ],
     ])
     ->setFinder($finder)
 ;

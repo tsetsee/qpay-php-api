@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Qpay\Api\Enum\AuthTokenType;
 use Spatie\DataTransferObject\Attributes\CastWith;
 use Spatie\DataTransferObject\Attributes\MapFrom;
+use Spatie\DataTransferObject\Casters\EnumCaster;
 use Spatie\DataTransferObject\DataTransferObject;
 use Tsetsee\DtoCasters\Casters\CarbonCaster;
 
@@ -15,6 +16,7 @@ class AuthTokenDTO extends DataTransferObject
      * Токены төрөл.
      */
     #[MapFrom('token_type')]
+    #[CastWith(EnumCaster::class, enumType: AuthTokenType::class)]
     public AuthTokenType $tokenType;
 
     /**
