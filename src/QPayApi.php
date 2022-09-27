@@ -8,8 +8,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleLogMiddleware\LogMiddleware;
+use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
 use Qpay\Api\DTO\AuthTokenDTO;
+use Qpay\Api\DTO\CreateInvoiceRequest;
+use Qpay\Api\DTO\CreateInvoiceResponse;
 use Qpay\Api\Enum\BaseUrl;
 use Qpay\Api\Enum\Env;
 
@@ -34,7 +38,7 @@ class QPayApi
         $stack->push(function (callable $handler) {
             return function (RequestInterface $request, array $options) use ($handler) {
                 if (!empty($options['oauth2'])) {
-                    $request->withHeader('Authorization', 'Bearer '.$this->getAccessToken());
+                    $request = $request->withHeader('Authorization', 'Bearer '.$this->getAccessToken());
                 }
 
                 return $handler($request, $options);
@@ -42,10 +46,12 @@ class QPayApi
         });
 
         if (isset($options['logger'])) {
-            $stack->push(new LogMiddleware($options['logger']));
+            if ($options['logger'] instanceof LoggerInterface) {
+                $stack->push(new LogMiddleware($options['logger']));
+            } else {
+                throw new InvalidArgumentException('logger argument is not '.LoggerInterface::class);
+            }
         }
-
-        // $stack->push(new LogMiddleware())
 
         $this->client = new Client([
             'base_uri' => (Env::PROD === $env ? BaseUrl::PROD : BaseUrl::SANDBOX)->value,
@@ -73,15 +79,14 @@ class QPayApi
         return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
     }
 
-    public function createInvoice(): AuthTokenDTO
+    public function createInvoice(CreateInvoiceRequest $request): CreateInvoiceResponse
     {
         $response = $this->client->post('invoice', [
             'oauth2' => true,
+            'json' => $request->toArray(),
         ]);
 
-        var_dump((string) $response->getBody());
-
-        return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
+        return new CreateInvoiceResponse(json_decode((string) $response->getBody(), true));
     }
 
     private function getAccessToken(): string
