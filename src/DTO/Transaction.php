@@ -2,27 +2,24 @@
 
 namespace Qpay\Api\DTO;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use Tsetsee\DTO\DTO\TseDTO;
 
-class Transaction extends DataTransferObject
+class Transaction extends TseDTO
 {
-    public function __construct(
-        /**
-         * Гүйлгээний утга
-         * Example: Тест төлбөр
-         */
-        public string $description,
-        /**
-         * Мөнгөн дүн
-         * Example: 100.
-         */
-        public float $amount,
-        /**
-         * Банкны данс
-         *
-         * @var ?array<Account>
-         */
-        public ?array $accounts,
-    ) {
-    }
+    /**
+     * Гүйлгээний утга
+     * Example: Тест төлбөр
+     */
+    public string $description;
+    /**
+     * Мөнгөн дүн
+     * Example: 100.
+     */
+    public float $amount;
+    /**
+     * Банкны данс
+     *
+     * @var ?array<Account>
+     */
+    public ?array $accounts;
 }

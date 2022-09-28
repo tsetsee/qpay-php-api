@@ -7,10 +7,10 @@ use Qpay\Api\Enum\AuthTokenType;
 use Spatie\DataTransferObject\Attributes\CastWith;
 use Spatie\DataTransferObject\Attributes\MapFrom;
 use Spatie\DataTransferObject\Casters\EnumCaster;
-use Spatie\DataTransferObject\DataTransferObject;
-use Tsetsee\DtoCasters\Casters\CarbonCaster;
+use Tsetsee\DTO\Casters\CarbonCaster;
+use Tsetsee\DTO\DTO\TseDTO;
 
-class AuthTokenDTO extends DataTransferObject
+class AuthTokenDTO extends TseDTO
 {
     /**
      * Токены төрөл.

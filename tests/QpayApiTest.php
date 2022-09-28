@@ -25,13 +25,17 @@ test('getAuthToken AND refreshToken', function () use ($api) {
 });
 
 test('createInvoice', function () use ($api) {
-    $response = $api->createInvoice((new CreateInvoiceRequest(
-        invoiceCode: 'TEST_INVOICE',
-        senderInvoiceNo: '1234567',
-        invoiceReceiverCode: 'terminal',
-        invoiceDescription: 'test',
-        amount: 100.0,
-        callbackUrl: 'https://bd5492c3ee85.ngrok.io/payments?payment_id=123',
-    ))->only('invoice_code', 'sender_invoice_no', 'invoice_receiver_code', 'invoice_description', 'amount', 'callback_url'));
+    $response = $api->createInvoice(
+        new CreateInvoiceRequest([
+            'invoiceCode' => 'TEST_INVOICE',
+            'senderInvoiceNo' => '1234567',
+            'invoiceReceiverCode' => 'terminal',
+            'invoiceDescription' => 'test',
+            'amount' => 100.0,
+            'callbackUrl' => 'https://bd5492c3ee85.ngrok.io/payments?payment_id=123',
+        ])
+    );
     expect($response)->not()->toBeNull();
+
+    $api->getInvoice($response->invoiceId);
 });

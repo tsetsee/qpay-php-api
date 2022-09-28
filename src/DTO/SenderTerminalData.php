@@ -2,15 +2,12 @@
 
 namespace Qpay\Api\DTO;
 
-use Spatie\DataTransferObject\DataTransferObject;
+use Tsetsee\DTO\DTO\TseDTO;
 
-class SenderTerminalData extends DataTransferObject
+class SenderTerminalData extends TseDTO
 {
-    public function __construct(
-        /**
-         * Терминалын нэр
-         */
-        public ?string $name,
-    ) {
-    }
+    /**
+     * Терминалын нэр
+     */
+    public ?string $name;
 }

@@ -2,35 +2,44 @@
 
 namespace Qpay\Api\DTO;
 
+use DateTimeImmutable;
 use DateTimeInterface;
-use Spatie\DataTransferObject\Attributes\MapTo;
+use Spatie\DataTransferObject\Attributes\DefaultCast;
+use Spatie\DataTransferObject\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
 
-class CreateInvoiceRequest extends TseDTO
+#[
+    DefaultCast(DateTimeImmutable::class, DateTimeImmutableCaster::class)
+]
+class GetInvoiceDTO extends TseDTO
 {
     /**
-     * qpay-ээс өгсөн нэхэмжлэхийн код.
-     * Example: TEST_INVOICE.
+     * Example: 737534d0-7ca5-4a3a-a58b-2e46c365002d.
      */
-    #[MapTo('invoice_code')]
-    public string $invoiceCode;
+    #[MapFrom('invoice_id')]
+    public string $invoiceId;
+    /**
+     * Example: OPEN.
+     */
+    #[MapFrom('invoice_status')]
+    public string $invoiceStatus;
     /**
      * Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
      * Example: 123.
      */
-    #[MapTo('sender_invoice_no')]
+    #[MapFrom('sender_invoice_no')]
     public string $senderInvoiceNo;
     /**
      * Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
      * Example: ТБ82045421.
      */
-    #[MapTo('invoice_receiver_code')]
+    #[MapFrom('invoice_receiver_code')]
     public string $invoiceReceiverCode;
     /**
      * Нэхэмжлэлийн утга
      * Example: Чихэр 5ш.
      */
-    #[MapTo('invoice_description')]
+    #[MapFrom('invoice_description')]
     public string $invoiceDescription;
     /**
      * Мөнгөн дүн.
@@ -43,41 +52,41 @@ class CreateInvoiceRequest extends TseDTO
      *
      * Example: https://bd5492c3ee85.ngrok.io/payments?payment_id=1234567
      */
-    #[MapTo('callback_url')]
+    #[MapFrom('callback_url')]
     public string $callbackUrl;
     /**
      * Байгууллагын салбарын код
      * Example: branch_01.
      */
-    #[MapTo('sender_branch_code')]
+    #[MapFrom('sender_branch_code')]
     public ?string $senderBranchCode = null;
     /**
      * Байгууллагын салбарын мэдээлэл.
      */
-    #[MapTo('sender_branch_data')]
+    #[MapFrom('sender_branch_data')]
     public ?SenderBranchData $senderBranchData = null;
     /**
      * Байгууллагын ажилтаны давтагдашгүй код
      * Example: staff_01.
      */
-    #[MapTo('sender_staff_code')]
+    #[MapFrom('sender_staff_code')]
     public ?string $senderStaffCode = null;
     /**
      * Байгууллагын ажилтаны мэдээлэл.
      */
-    #[MapTo('sender_staff_data')]
+    #[MapFrom('sender_staff_data')]
     public mixed $senderStaffData = null;
     /**
      * Байгууллага өөрсдийн ашиглаж буй терминалаа давхцалгүй дугаарласан код
      * Example: terminal_01.
      */
-    #[MapTo('sender_terminal_code')]
+    #[MapFrom('sender_terminal_code')]
     public ?string $senderTerminalCode = null;
     /**
      * Байгууллагын терминалын мэдээлэл
      * Example: terminal_01.
      */
-    #[MapTo('sender_terminal_data')]
+    #[MapFrom('sender_terminal_data')]
     public ?SenderTerminalData $senderTerminalData = null;
     /**
      * Нэхэмжлэл хүлээн авагчийн мэдээлэл.
@@ -89,31 +98,31 @@ class CreateInvoiceRequest extends TseDTO
      *      "phone":"99887766"
      * }.
      */
-    #[MapTo('invoice_receiver_data')]
+    #[MapFrom('invoice_receiver_data')]
     public ?InvoiceReceiverData $invoiceReceiverData = null;
     /**
      * Нэхэмжлэлийн хүчингүй болох огноо
      * Example: Чихэр 5ш.
      */
-    #[MapTo('invoice_due_date')]
+    #[MapFrom('invoice_due_date')]
     public ?DateTimeInterface $invoiceDueDate = null;
     /**
      * Хугацаа хэтэрсэн ч төлж болох эсэх
      * Example: FALSE.
      */
-    #[MapTo('invoice_due_date')]
+    #[MapFrom('invoice_due_date')]
     public ?bool $enableExpiry = null;
     /**
      * Нэхэмжлэхийн дуусах хугацаа
      * Example: Date.
      */
-    #[MapTo('expiry_date')]
+    #[MapFrom('expiry_date')]
     public ?DateTimeInterface $expiryDate = null;
     /**
      * Нөат-ын тооцоолол
      * Example: FALSE.
      */
-    #[MapTo('calculate_vat')]
+    #[MapFrom('calculate_vat')]
     public ?bool $calculateVat = null;
     /**
      * ИБаримт үүсгүүлэх байгууллагын мэдээлэл
@@ -123,7 +132,7 @@ class CreateInvoiceRequest extends TseDTO
      *          Нэхэмлэхийн код(invoice_code) Обьектын төрөл QR үед
      *          QR кодыг ашиглана.
      */
-    #[MapTo('tax_customer_code')]
+    #[MapFrom('tax_customer_code')]
     public ?string $taxCustomerCode = null;
     /**
      * БТҮК код - Барааны Lines хоосон үед ашиглана
@@ -131,35 +140,35 @@ class CreateInvoiceRequest extends TseDTO
      *
      * Example: 83051.
      */
-    #[MapTo('line_tax_code')]
+    #[MapFrom('line_tax_code')]
     public ?string $lineTaxCode = null;
     /**
      * Хувааж төлж болох эсэх.
      *
      * Example: FALSE.
      */
-    #[MapTo('allow_partial')]
+    #[MapFrom('allow_partial')]
     public ?bool $allowPartial = null;
     /**
      * Төлөх хамгийн бага дүн.
      *
      * Example: 100.
      */
-    #[MapTo('minimum_amount')]
+    #[MapFrom('minimum_amount')]
     public ?float $minimumAmount = null;
     /**
      * Илүү төлж болох.
      *
      * Example: FALSE.
      */
-    #[MapTo('allow_exceed')]
+    #[MapFrom('allow_exceed')]
     public ?bool $allowExceed = null;
     /**
      * Төлөх хамгийн их дүн.
      *
      * Example: 100.
      */
-    #[MapTo('maximum_amount')]
+    #[MapFrom('maximum_amount')]
     public ?float $maximumAmount = null;
     /**
      * Тэмдэглэл

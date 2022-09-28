@@ -65,7 +65,7 @@ class QPayApi
             'auth' => [$this->username, $this->password],
         ]);
 
-        return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
+        return new AuthTokenDTO((array) json_decode((string) $response->getBody(), true));
     }
 
     public function refreshAuthToken(string $refreshToken): AuthTokenDTO
@@ -76,7 +76,7 @@ class QPayApi
             ],
         ]);
 
-        return new AuthTokenDTO(json_decode((string) $response->getBody(), true));
+        return new AuthTokenDTO((array) json_decode((string) $response->getBody(), true));
     }
 
     public function createInvoice(CreateInvoiceRequest $request): CreateInvoiceResponse
@@ -86,7 +86,15 @@ class QPayApi
             'json' => $request->toArray(),
         ]);
 
-        return new CreateInvoiceResponse(json_decode((string) $response->getBody(), true));
+        return new CreateInvoiceResponse((array) json_decode((string) $response->getBody(), true));
+    }
+
+    public function getInvoice(string $invoiceId)
+    {
+        $response = $this->client->get('invoice/'.$invoiceId, [
+            'oauth2' => true,
+        ]);
+        var_dump((string) $response->getBody());
     }
 
     private function getAccessToken(): string

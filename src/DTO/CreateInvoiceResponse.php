@@ -3,9 +3,9 @@
 namespace Qpay\Api\DTO;
 
 use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\DataTransferObject;
+use Tsetsee\DTO\DTO\TseDTO;
 
-class CreateInvoiceResponse extends DataTransferObject
+class CreateInvoiceResponse extends TseDTO
 {
     /**
      * Object id

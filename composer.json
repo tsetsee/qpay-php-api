@@ -19,9 +19,9 @@
         "guzzlehttp/guzzle": "^7.5",
         "spatie/data-transfer-object": "^3.9",
         "nesbot/carbon": "^2.62",
-        "tsetsee/dto-casters": "^0.1.0",
         "gmponos/guzzle_logger": "^2.2",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "tsetsee/php-dto": "^0.1.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.8",
