@@ -19,6 +19,10 @@ class CreateInvoiceRequest extends TseDTO
     public string $invoiceCode;
     /**
      * Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
+     * 1. <red>АНХААРУУЛГА! sender_invoice_no дахин давтагдашгүй байх ёстой ба
+     *    ижил sender_invoice_no-гоор олон нэхэмжлэх үүсгэж болохгүй</red>
+     * 2. Тусгай тэмдэгт ашиглаж болохгүй.
+     *
      * Example: 123.
      */
     #[MapTo('sender_invoice_no')]
@@ -31,7 +35,7 @@ class CreateInvoiceRequest extends TseDTO
     public string $invoiceReceiverCode;
     /**
      * Нэхэмжлэлийн утга
-     * Example: Чихэр 5ш.
+     * Example: Order No1311 200.00.
      */
     #[MapTo('invoice_description')]
     public string $invoiceDescription;
@@ -77,7 +81,7 @@ class CreateInvoiceRequest extends TseDTO
     #[MapTo('sender_terminal_code')]
     public ?string $senderTerminalCode = null;
     /**
-     * Байгууллагын терминалын мэдээлэл
+     * Картын гүйлгээ хүлээн авах боломжтой банкнаас үүсгэж өгсөн терминал код
      * Example: terminal_01.
      */
     #[MapTo('sender_terminal_data')]
@@ -138,8 +142,9 @@ class CreateInvoiceRequest extends TseDTO
     #[MapTo('line_tax_code')]
     public ?string $lineTaxCode = null;
     /**
-     * Хувааж төлж болох эсэх.
-     *
+     * Хэсэгчлэн төлбөр төлөхийн зөвшөөрсөн эсэх
+     * true: Хувааж төлж болно
+     * false: Хувааж төлж болохгүй
      * Example: FALSE.
      */
     #[MapTo('allow_partial')]
@@ -152,8 +157,9 @@ class CreateInvoiceRequest extends TseDTO
     #[MapTo('minimum_amount')]
     public ?float $minimumAmount = null;
     /**
-     * Илүү төлж болох.
-     *
+     * Төлбөрийн дүнг өөрчилж болох эсэх
+     * true: Өөрчилж болно
+     * false: Өөрчилж болохгүй
      * Example: FALSE.
      */
     #[MapTo('allow_exceed')]
@@ -171,15 +177,34 @@ class CreateInvoiceRequest extends TseDTO
      */
     public ?string $note = null;
     /**
-     * Мөрүүд.
+     * Гүйлгээний мөрүүд.
      *
      * @var ?array<Line>
      */
     public ?array $lines = null;
     /**
-     * Гүйлгээ.
+     * Мерчантын тодорхойлсон дансанд орлого хүлээн авна /Оператор эрхтэй байгууллага ашиглах/.
      *
      * @var ?array<Transaction>
      */
     public ?array $transactions = null;
+    /**
+     * Автомат төлөлт зөвшөөрөх эсэх /картын гүйлгээнд хамаарна/.
+     * true: Автоматаар төлнө
+     * false: Автоматаар төлөхгүй
+     * Example: FALSE.
+     */
+    #[MapTo('allow_subscribe')]
+    public ?bool $allowSubscribe = null;
+    /**
+     * Автоматаар төлөгдөх хугацаа.
+     * Жишээ: 1D.
+     */
+    #[MapTo('subscription_interval')]
+    public ?string $subscriptionInterval = null;
+    /**
+     * Автоматаар төлөгдсөн эсэх талаар мэдэгдэл авах URL.
+     */
+    #[MapTo('subscription_webhook')]
+    public ?string $subscriptionWebhook = null;
 }

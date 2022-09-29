@@ -9,9 +9,9 @@ class Account extends TseDTO
 {
     /**
      * Банкны код
-     * Example: ??
+     * Example: 050000.
      */
-    #[MapTo('tax_code')]
+    #[MapTo('account_bank_code')]
     public string $accountBankCode;
     /**
      * Дансны дугаар
@@ -21,14 +21,22 @@ class Account extends TseDTO
     public string $accountNumber;
     /**
      * Дансны нэр
-     * Example: ККТТ.
+     * Example: Ganzul.
      */
     #[MapTo('account_name')]
     public string $accountName;
     /**
      * Валют
-     * Example: ??
+     * Example: MNT.
      */
     #[MapTo('account_currency')]
     public string $accountCurrency;
+    /**
+     * Үндсэн данс эсэх
+     * true: үндсэн данс
+     * false: үндсэн данс биш
+     * Example: ??
+     */
+    #[MapTo('is_default')]
+    public bool $isDefault = null;
 }

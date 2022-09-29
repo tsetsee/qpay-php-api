@@ -12,9 +12,12 @@ use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 use Qpay\Api\DTO\AuthTokenDTO;
+use Qpay\Api\DTO\CheckPaymentRequest;
+use Qpay\Api\DTO\CheckPaymentResponse;
 use Qpay\Api\DTO\CreateInvoiceRequest;
 use Qpay\Api\DTO\CreateInvoiceResponse;
 use Qpay\Api\DTO\GetInvoiceResponse;
+use Qpay\Api\DTO\Payment;
 use Qpay\Api\Enum\BaseUrl;
 use Qpay\Api\Enum\Env;
 
@@ -120,6 +123,64 @@ class QPayApi
     {
         $this->client->delete('invoice/'.$invoiceId, [
             'oauth2' => true,
+        ]);
+    }
+
+    /**
+     * Үүссэн invoice_id-аар гүйлгээ хийгдсэн мэдээлэл авахад ашиглана
+     * <red>АНХААРУУЛГА! Cron Job ашиглан гүйлгээ байнга шалгахыг хориглоно. Зөвхөн Callback URL ашиглана уу.</red>.
+     */
+    public function checkPayment(CheckPaymentRequest $request): CheckPaymentResponse
+    {
+        $response = $this->client->post('payment/check', [
+            'oauth2' => true,
+            'json' => $request->toArray(),
+        ]);
+
+        return new CheckPaymentResponse((array) json_decode((string) $response->getBody(), true));
+    }
+
+    /**
+     * Payment id-аар гүйлгээ хийгдсэн мэдээлэл авахад ашиглана.
+     * <red>АНХААРУУЛГА! Cron Job ашиглан гүйлгээ байнга шалгахыг хориглоно.
+     *      Зөвхөн Callback URL ашиглана уу.</red>.
+     */
+    public function getPayment(string $paymentId): Payment
+    {
+        $response = $this->client->get('payment/'.$paymentId, [
+            'oauth2' => true,
+        ]);
+
+        return new Payment((array) json_decode((string) $response->getBody(), true));
+    }
+
+    /**
+     * Төлбөрийг буцаах, цуцлах үед ашиглана.
+     * <red>АНХААРУУЛГА! Картын гүйлгээний үед л буцаах боломжтой</red>.
+     */
+    public function cancelPayment(string $paymentId, string $note): void
+    {
+        $this->client->delete('payment/cancel/'.$paymentId, [
+            'oauth2' => true,
+            'json' => [
+                'callback_url' => 'https://qpay.mn/payment/result?payment_id='.$paymentId,
+                'note' => $note,
+            ],
+        ]);
+    }
+
+    /**
+     * Төлбөрийг буцаах, цуцлах үед ашиглана.
+     * <red>АНХААРУУЛГА! Картын гүйлгээний үед л буцаах боломжтой</red>.
+     */
+    public function refundPayment(string $paymentId, string $note): void
+    {
+        $this->client->delete('payment/refund/'.$paymentId, [
+            'oauth2' => true,
+            'json' => [
+                'callback_url' => 'https://qpay.mn/payment/result?payment_id='.$paymentId,
+                'note' => $note,
+            ],
         ]);
     }
 
