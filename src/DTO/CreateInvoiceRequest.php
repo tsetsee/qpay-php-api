@@ -2,8 +2,11 @@
 
 namespace Qpay\Api\DTO;
 
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
+use Qpay\Api\Enum\DateFormat;
+use Spatie\DataTransferObject\Attributes\CastWith;
 use Spatie\DataTransferObject\Attributes\MapTo;
+use Tsetsee\DTO\Casters\CarbonCaster;
 use Tsetsee\DTO\DTO\TseDTO;
 
 class CreateInvoiceRequest extends TseDTO
@@ -92,23 +95,24 @@ class CreateInvoiceRequest extends TseDTO
     #[MapTo('invoice_receiver_data')]
     public ?InvoiceReceiverData $invoiceReceiverData = null;
     /**
-     * Нэхэмжлэлийн хүчингүй болох огноо
-     * Example: Чихэр 5ш.
+     * Нэхэмжлэлийн хүчингүй болох огноо.
      */
     #[MapTo('invoice_due_date')]
-    public ?DateTimeInterface $invoiceDueDate = null;
+    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
+    public ?CarbonImmutable $invoiceDueDate = null;
     /**
      * Хугацаа хэтэрсэн ч төлж болох эсэх
      * Example: FALSE.
      */
-    #[MapTo('invoice_due_date')]
+    #[MapTo('enable_expiry')]
     public ?bool $enableExpiry = null;
     /**
      * Нэхэмжлэхийн дуусах хугацаа
      * Example: Date.
      */
     #[MapTo('expiry_date')]
-    public ?DateTimeInterface $expiryDate = null;
+    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
+    public ?CarbonImmutable $expiryDate = null;
     /**
      * Нөат-ын тооцоолол
      * Example: FALSE.

@@ -33,5 +33,15 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "scripts": {
+        "fixer": "php-cs-fixer fix",
+        "phpstan": "phpstan analyze",
+        "unit-test": "pest",
+        "test": [
+            "@fixer",
+            "@phpstan",
+            "@unit-test"
+        ]
     }
 }

@@ -1240,16 +1240,16 @@
         },
         {
             "name": "tsetsee/php-dto",
-            "version": "0.1.3",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tsetsee/php-dto.git",
-                "reference": "387e9e63ca7505a168be89e707b08f7f38d65227"
+                "reference": "5757c09b4cdf04bd1a1a4e8ddd9ae88a4f398baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tsetsee/php-dto/zipball/387e9e63ca7505a168be89e707b08f7f38d65227",
-                "reference": "387e9e63ca7505a168be89e707b08f7f38d65227",
+                "url": "https://api.github.com/repos/tsetsee/php-dto/zipball/5757c09b4cdf04bd1a1a4e8ddd9ae88a4f398baa",
+                "reference": "5757c09b4cdf04bd1a1a4e8ddd9ae88a4f398baa",
                 "shasum": ""
             },
             "require": {
@@ -1280,9 +1280,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tsetsee/php-dto/issues",
-                "source": "https://github.com/tsetsee/php-dto/tree/0.1.3"
+                "source": "https://github.com/tsetsee/php-dto/tree/0.1.4"
             },
-            "time": "2022-09-28T08:03:27+00:00"
+            "time": "2022-09-29T05:39:51+00:00"
         }
     ],
     "packages-dev": [
@@ -5209,5 +5209,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

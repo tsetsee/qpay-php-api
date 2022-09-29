@@ -2,16 +2,14 @@
 
 namespace Qpay\Api\DTO;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use Spatie\DataTransferObject\Attributes\DefaultCast;
+use Carbon\CarbonImmutable;
+use Qpay\Api\Enum\DateFormat;
+use Spatie\DataTransferObject\Attributes\CastWith;
 use Spatie\DataTransferObject\Attributes\MapFrom;
+use Tsetsee\DTO\Casters\CarbonCaster;
 use Tsetsee\DTO\DTO\TseDTO;
 
-#[
-    DefaultCast(DateTimeImmutable::class, DateTimeImmutableCaster::class)
-]
-class GetInvoiceDTO extends TseDTO
+class GetInvoiceResponse extends TseDTO
 {
     /**
      * Example: 737534d0-7ca5-4a3a-a58b-2e46c365002d.
@@ -30,23 +28,11 @@ class GetInvoiceDTO extends TseDTO
     #[MapFrom('sender_invoice_no')]
     public string $senderInvoiceNo;
     /**
-     * Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
-     * Example: ТБ82045421.
-     */
-    #[MapFrom('invoice_receiver_code')]
-    public string $invoiceReceiverCode;
-    /**
      * Нэхэмжлэлийн утга
      * Example: Чихэр 5ш.
      */
     #[MapFrom('invoice_description')]
     public string $invoiceDescription;
-    /**
-     * Мөнгөн дүн.
-     *
-     * Example: 100.
-     */
-    public float $amount;
     /**
      * Төлбөр төлсөгдсөн эсэх талаар мэдэгдэл авах URL.
      *
@@ -54,6 +40,31 @@ class GetInvoiceDTO extends TseDTO
      */
     #[MapFrom('callback_url')]
     public string $callbackUrl;
+    /**
+     * Example: 100.
+     */
+    #[MapFrom('total_amount')]
+    public float $totalAmount;
+    /**
+     * Example: 100.
+     */
+    #[MapFrom('gross_amount')]
+    public float $grossAmount;
+    /**
+     * Example: 100.
+     */
+    #[MapFrom('tax_amount')]
+    public float $taxAmount;
+    /**
+     * Example: 100.
+     */
+    #[MapFrom('surcharge_amount')]
+    public float $surchargeAmount;
+    /**
+     * Example: 100.
+     */
+    #[MapFrom('discount_amount')]
+    public float $discountAmount;
     /**
      * Байгууллагын салбарын код
      * Example: branch_01.
@@ -66,89 +77,32 @@ class GetInvoiceDTO extends TseDTO
     #[MapFrom('sender_branch_data')]
     public ?SenderBranchData $senderBranchData = null;
     /**
-     * Байгууллагын ажилтаны давтагдашгүй код
-     * Example: staff_01.
-     */
-    #[MapFrom('sender_staff_code')]
-    public ?string $senderStaffCode = null;
-    /**
-     * Байгууллагын ажилтаны мэдээлэл.
-     */
-    #[MapFrom('sender_staff_data')]
-    public mixed $senderStaffData = null;
-    /**
-     * Байгууллага өөрсдийн ашиглаж буй терминалаа давхцалгүй дугаарласан код
-     * Example: terminal_01.
-     */
-    #[MapFrom('sender_terminal_code')]
-    public ?string $senderTerminalCode = null;
-    /**
-     * Байгууллагын терминалын мэдээлэл
-     * Example: terminal_01.
-     */
-    #[MapFrom('sender_terminal_data')]
-    public ?SenderTerminalData $senderTerminalData = null;
-    /**
-     * Нэхэмжлэл хүлээн авагчийн мэдээлэл.
-     * Example:
-     * {
-     *      "register":"TA89102712";
-     *      "name":"Бат";
-     *      "email":"info@info.mn";
-     *      "phone":"99887766"
-     * }.
-     */
-    #[MapFrom('invoice_receiver_data')]
-    public ?InvoiceReceiverData $invoiceReceiverData = null;
-    /**
      * Нэхэмжлэлийн хүчингүй болох огноо
      * Example: Чихэр 5ш.
      */
     #[MapFrom('invoice_due_date')]
-    public ?DateTimeInterface $invoiceDueDate = null;
+    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
+    public ?CarbonImmutable $invoiceDueDate = null;
     /**
      * Хугацаа хэтэрсэн ч төлж болох эсэх
      * Example: FALSE.
      */
-    #[MapFrom('invoice_due_date')]
-    public ?bool $enableExpiry = null;
+    #[MapFrom('enable_expiry')]
+    public bool $enableExpiry;
     /**
      * Нэхэмжлэхийн дуусах хугацаа
      * Example: Date.
      */
     #[MapFrom('expiry_date')]
-    public ?DateTimeInterface $expiryDate = null;
-    /**
-     * Нөат-ын тооцоолол
-     * Example: FALSE.
-     */
-    #[MapFrom('calculate_vat')]
-    public ?bool $calculateVat = null;
-    /**
-     * ИБаримт үүсгүүлэх байгууллагын мэдээлэл
-     *      1. Байгууллага бол байгууллагын регистерийн дугаар
-     *      2. Хэрэглэгчийн регистерийн дугаар
-     * Example: Обьектын ID Обьектын төрөл INVOICE үед
-     *          Нэхэмлэхийн код(invoice_code) Обьектын төрөл QR үед
-     *          QR кодыг ашиглана.
-     */
-    #[MapFrom('tax_customer_code')]
-    public ?string $taxCustomerCode = null;
-    /**
-     * БТҮК код - Барааны Lines хоосон үед ашиглана
-     * http://web.nso.mn/meta_sys1/files/angilal/Buteegdexuunii%20angilal.pdf.
-     *
-     * Example: 83051.
-     */
-    #[MapFrom('line_tax_code')]
-    public ?string $lineTaxCode = null;
+    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
+    public ?CarbonImmutable $expiryDate = null;
     /**
      * Хувааж төлж болох эсэх.
      *
      * Example: FALSE.
      */
     #[MapFrom('allow_partial')]
-    public ?bool $allowPartial = null;
+    public bool $allowPartial;
     /**
      * Төлөх хамгийн бага дүн.
      *
@@ -162,7 +116,7 @@ class GetInvoiceDTO extends TseDTO
      * Example: FALSE.
      */
     #[MapFrom('allow_exceed')]
-    public ?bool $allowExceed = null;
+    public bool $allowExceed;
     /**
      * Төлөх хамгийн их дүн.
      *
