@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba16f3030bb55d78c81ded97e683221a",
+    "content-hash": "42084957da0e3121d809e5f425111313",
     "packages": [
         {
             "name": "gmponos/guzzle_logger",
@@ -1283,6 +1283,47 @@
                 "source": "https://github.com/tsetsee/php-dto/tree/0.1.4"
             },
             "time": "2022-09-29T05:39:51+00:00"
+        },
+        {
+            "name": "tsetsee/tse-guzzle",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tsetsee/tse-guzzle.git",
+                "reference": "fe17f5d5056783ce5593083b4c3c1d616838300d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tsetsee/tse-guzzle/zipball/fe17f5d5056783ce5593083b4c3c1d616838300d",
+                "reference": "fe17f5d5056783ce5593083b4c3c1d616838300d",
+                "shasum": ""
+            },
+            "require": {
+                "gmponos/guzzle_logger": "^2.2",
+                "guzzlehttp/guzzle": "^7.0",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tsetsee\\TseGuzzle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tsetsee",
+                    "email": "tsetsee.yugi@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/tsetsee/tse-guzzle/issues",
+                "source": "https://github.com/tsetsee/tse-guzzle/tree/0.0.2"
+            },
+            "time": "2022-10-03T15:02:57+00:00"
         }
     ],
     "packages-dev": [

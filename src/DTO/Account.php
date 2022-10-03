@@ -38,5 +38,5 @@ class Account extends TseDTO
      * Example: ??
      */
     #[MapTo('is_default')]
-    public bool $isDefault = null;
+    public bool $isDefault;
 }

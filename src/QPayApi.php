@@ -4,13 +4,6 @@ namespace Qpay\Api;
 
 use Carbon\Carbon;
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleLogMiddleware\LogMiddleware;
-use InvalidArgumentException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Log\LoggerInterface;
 use Qpay\Api\DTO\AuthTokenDTO;
 use Qpay\Api\DTO\CheckPaymentRequest;
 use Qpay\Api\DTO\CheckPaymentResponse;
@@ -20,10 +13,10 @@ use Qpay\Api\DTO\GetInvoiceResponse;
 use Qpay\Api\DTO\Payment;
 use Qpay\Api\Enum\BaseUrl;
 use Qpay\Api\Enum\Env;
+use Tsetsee\TseGuzzle\TseGuzzle;
 
-class QPayApi
+class QPayApi extends TseGuzzle
 {
-    private Client $client;
     private ?AuthTokenDTO $authToken = null;
 
     /**
@@ -35,32 +28,8 @@ class QPayApi
         Env $env = Env::PROD,
         array $options = [],
     ) {
-        /** @var (callable(RequestInterface, array<string,mixed>): PromiseInterface)|null $handler */
-        $handler = $options['handler'] ?? null;
-
-        $stack = HandlerStack::create($handler);
-        $stack->push(function (callable $handler) {
-            return function (RequestInterface $request, array $options) use ($handler) {
-                if (!empty($options['oauth2'])) {
-                    $request = $request->withHeader('Authorization', 'Bearer '.$this->getAccessToken());
-                }
-
-                return $handler($request, $options);
-            };
-        });
-
-        if (isset($options['logger'])) {
-            if ($options['logger'] instanceof LoggerInterface) {
-                $stack->push(new LogMiddleware($options['logger']));
-            } else {
-                throw new InvalidArgumentException('logger argument is not '.LoggerInterface::class);
-            }
-        }
-
-        $this->client = new Client([
-            'base_uri' => (Env::PROD === $env ? BaseUrl::PROD : BaseUrl::SANDBOX)->value,
-            'handler' => $stack,
-        ]);
+        $options['base_uri'] = (Env::PROD === $env ? BaseUrl::PROD : BaseUrl::SANDBOX)->value;
+        parent::__construct($options);
     }
 
     /**
@@ -184,7 +153,7 @@ class QPayApi
         ]);
     }
 
-    private function getAccessToken(): string
+    protected function getAccessToken(): string
     {
         if (!$this->isAccessTokenAlive()) {
             if ($this->isRefreshTokenAlive() && $this->authToken) {

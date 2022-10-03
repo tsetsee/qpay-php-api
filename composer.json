@@ -21,7 +21,8 @@
         "nesbot/carbon": "^2.62",
         "gmponos/guzzle_logger": "^2.2",
         "psr/log": "^3.0",
-        "tsetsee/php-dto": "^0.1.2"
+        "tsetsee/php-dto": "^0.1.2",
+        "tsetsee/tse-guzzle": "^0.0.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.8",
