@@ -1,14 +1,13 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Carbon\Carbon;
-use Qpay\Api\Enum\AuthTokenType;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\Casters\EnumCaster;
-use Tsetsee\DTO\Casters\CarbonCaster;
+use Symfony\Component\Serializer\Annotation\Context;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\DTO\Serializer\Normalizer\CarbonNormalizer;
+use Tsetsee\Qpay\Api\Enum\AuthTokenType;
 
 class AuthTokenDTO extends TseDTO
 {
@@ -16,14 +15,17 @@ class AuthTokenDTO extends TseDTO
      * Токены төрөл.
      */
     #[MapFrom('token_type')]
-    #[CastWith(EnumCaster::class, enumType: AuthTokenType::class)]
     public AuthTokenType $tokenType;
 
     /**
      * refresh токены дуусах хугацаа /timestamp/.
      */
     #[MapFrom('refresh_expires_in')]
-    #[CastWith(CarbonCaster::class, type: 'timestamp')]
+    #[Context(
+        denormalizationContext: [
+            CarbonNormalizer::FORMAT_KEY => 'X',
+        ],
+    )]
     public Carbon $refreshExpiresIn;
 
     /**
@@ -42,7 +44,11 @@ class AuthTokenDTO extends TseDTO
      * Access токены дуусах хугацаа /timestamp/.
      */
     #[MapFrom('expires_in')]
-    #[CastWith(CarbonCaster::class, type: 'timestamp')]
+    #[Context(
+        denormalizationContext: [
+            CarbonNormalizer::FORMAT_KEY => 'X',
+        ],
+    )]
     public Carbon $expiresIn;
 
     /**

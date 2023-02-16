@@ -1,8 +1,8 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
-use Spatie\DataTransferObject\Attributes\MapFrom;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
 
 class CheckPaymentResponse extends TseDTO

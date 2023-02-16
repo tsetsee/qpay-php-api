@@ -1,12 +1,10 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
-use Qpay\Api\Enum\ObjectType;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapTo;
-use Spatie\DataTransferObject\Casters\EnumCaster;
+use Tsetsee\DTO\Attributes\MapTo;
 use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\Qpay\Api\Enum\ObjectType;
 
 class CheckPaymentRequest extends TseDTO
 {
@@ -18,7 +16,6 @@ class CheckPaymentRequest extends TseDTO
      * Example: INVOICE.
      */
     #[MapTo('object_type')]
-    #[CastWith(EnumCaster::class, enumType: ObjectType::class)]
     public ObjectType $objectType;
     /**
      * Обьектын ID Обьектын төрөл
@@ -32,5 +29,5 @@ class CheckPaymentRequest extends TseDTO
      * Object.
      */
     #[MapTo('offset')]
-    public ?Offset $offset = null;
+    public ?Offset $offset;
 }

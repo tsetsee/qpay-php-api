@@ -1,6 +1,6 @@
 <?php
 
-namespace Qpay\Api\Enum;
+namespace Tsetsee\Qpay\Api\Enum;
 
 enum PaymentType: string
 {

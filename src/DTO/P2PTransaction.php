@@ -1,13 +1,11 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
-use Qpay\Api\Enum\BankCode;
-use Qpay\Api\Enum\Currency;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\Casters\EnumCaster;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\Qpay\Api\Enum\BankCode;
+use Tsetsee\Qpay\Api\Enum\Currency;
 
 class P2PTransaction extends TseDTO
 {
@@ -16,14 +14,12 @@ class P2PTransaction extends TseDTO
      * Example: 50000.
      */
     #[MapFrom('transaction_bank_code')]
-    #[CastWith(EnumCaster::class, enumType: BankCode::class)]
     public BankCode $transactionBankCode;
     /**
      * Гүйлгээг эхлүүлэгч банкны код
      * Example: 50000.
      */
     #[MapFrom('account_bank_code')]
-    #[CastWith(EnumCaster::class, enumType: BankCode::class)]
     public BankCode $accountBankCode;
     /**
      * Төлбөр хүлээн авагч банкны нэр
@@ -51,7 +47,6 @@ class P2PTransaction extends TseDTO
      * Дансанд орсон төлбөрийн валют
      * Example: MNT.
      */
-    #[CastWith(EnumCaster::class, enumType: Currency::class)]
     public Currency $currency;
     /**
      * Дансны гүйлгээний хаалт хийгдсэн эсэх статус /Realtime/

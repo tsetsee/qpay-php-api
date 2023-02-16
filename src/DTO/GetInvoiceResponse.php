@@ -1,12 +1,9 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Carbon\CarbonImmutable;
-use Qpay\Api\Enum\DateFormat;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Tsetsee\DTO\Casters\CarbonCaster;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
 
 class GetInvoiceResponse extends TseDTO
@@ -70,19 +67,18 @@ class GetInvoiceResponse extends TseDTO
      * Example: branch_01.
      */
     #[MapFrom('sender_branch_code')]
-    public ?string $senderBranchCode = null;
+    public ?string $senderBranchCode;
     /**
      * Байгууллагын салбарын мэдээлэл.
      */
     #[MapFrom('sender_branch_data')]
-    public ?SenderBranchData $senderBranchData = null;
+    public ?SenderBranchData $senderBranchData;
     /**
      * Нэхэмжлэлийн хүчингүй болох огноо
      * Example: Чихэр 5ш.
      */
     #[MapFrom('invoice_due_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $invoiceDueDate = null;
+    public ?CarbonImmutable $invoiceDueDate;
     /**
      * Хугацаа хэтэрсэн ч төлж болох эсэх
      * Example: FALSE.
@@ -94,8 +90,7 @@ class GetInvoiceResponse extends TseDTO
      * Example: Date.
      */
     #[MapFrom('expiry_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $expiryDate = null;
+    public ?CarbonImmutable $expiryDate;
     /**
      * Хувааж төлж болох эсэх.
      *
@@ -109,7 +104,7 @@ class GetInvoiceResponse extends TseDTO
      * Example: 100.
      */
     #[MapFrom('minimum_amount')]
-    public ?float $minimumAmount = null;
+    public ?float $minimumAmount;
     /**
      * Илүү төлж болох.
      *
@@ -123,22 +118,22 @@ class GetInvoiceResponse extends TseDTO
      * Example: 100.
      */
     #[MapFrom('maximum_amount')]
-    public ?float $maximumAmount = null;
+    public ?float $maximumAmount;
     /**
      * Тэмдэглэл
      * Example: Тэмдэглэл.
      */
-    public ?string $note = null;
+    public ?string $note;
     /**
      * Мөрүүд.
      *
      * @var ?array<Line>
      */
-    public ?array $lines = null;
+    public ?array $lines;
     /**
      * Гүйлгээ.
      *
      * @var ?array<Transaction>
      */
-    public ?array $transactions = null;
+    public ?array $transactions;
 }

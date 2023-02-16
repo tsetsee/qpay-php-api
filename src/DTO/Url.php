@@ -1,6 +1,6 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Tsetsee\DTO\DTO\TseDTO;
 

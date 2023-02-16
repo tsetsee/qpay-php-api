@@ -3,12 +3,12 @@
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use Qpay\Api\DTO\AuthTokenDTO;
-use Qpay\Api\DTO\CreateInvoiceRequest;
-use Qpay\Api\DTO\CreateInvoiceResponse;
-use Qpay\Api\DTO\GetInvoiceResponse;
-use Qpay\Api\Enum\Env;
-use Qpay\Api\QPayApi;
+use Tsetsee\Qpay\Api\DTO\AuthTokenDTO;
+use Tsetsee\Qpay\Api\DTO\CreateInvoiceRequest;
+use Tsetsee\Qpay\Api\DTO\CreateInvoiceResponse;
+use Tsetsee\Qpay\Api\DTO\GetInvoiceResponse;
+use Tsetsee\Qpay\Api\Enum\Env;
+use Tsetsee\Qpay\Api\QPayApi;
 
 $logger = new Logger('test');
 $logger->pushHandler(new StreamHandler(STDOUT, Level::Debug));
@@ -33,7 +33,7 @@ it('extends accessToken', function (AuthTokenDTO $authToken) use ($api) {
 
 it('creates invoice', function () use ($api) {
     $response = $api->createInvoice(
-        new CreateInvoiceRequest([
+        CreateInvoiceRequest::from([
             'invoiceCode' => 'TEST_INVOICE',
             'senderInvoiceNo' => '1234567',
             'invoiceReceiverCode' => 'terminal',

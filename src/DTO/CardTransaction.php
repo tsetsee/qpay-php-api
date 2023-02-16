@@ -1,15 +1,11 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Carbon\CarbonImmutable;
-use Qpay\Api\Enum\Currency;
-use Qpay\Api\Enum\DateFormat;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\Casters\EnumCaster;
-use Tsetsee\DTO\Casters\CarbonCaster;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\Qpay\Api\Enum\Currency;
 
 class CardTransaction extends TseDTO
 {
@@ -35,13 +31,11 @@ class CardTransaction extends TseDTO
      * Валют
      * Example: MNT.
      */
-    #[CastWith(EnumCaster::class, enumType: Currency::class)]
     public Currency $currency;
     /**
      * Гүйлгээ хийгдсэн хугацаа
      * Example: 2022-03-11T06:23:48.586Z.
      */
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
     public CarbonImmutable $date;
     /**
      * Статус
@@ -58,7 +52,6 @@ class CardTransaction extends TseDTO
      * Картын гүйлгээ бичигдсэн хугацаа
      * Example: 2022-03-11T06:23:48.586Z.
      */
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
     #[MapFrom('settlement_status_date')]
     public CarbonImmutable $settlementStatusDate;
 }

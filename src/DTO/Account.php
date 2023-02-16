@@ -1,8 +1,8 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
-use Spatie\DataTransferObject\Attributes\MapTo;
+use Tsetsee\DTO\Attributes\MapTo;
 use Tsetsee\DTO\DTO\TseDTO;
 
 class Account extends TseDTO

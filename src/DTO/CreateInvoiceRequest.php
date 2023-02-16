@@ -1,12 +1,9 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Carbon\CarbonImmutable;
-use Qpay\Api\Enum\DateFormat;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapTo;
-use Tsetsee\DTO\Casters\CarbonCaster;
+use Tsetsee\DTO\Attributes\MapTo;
 use Tsetsee\DTO\DTO\TseDTO;
 
 class CreateInvoiceRequest extends TseDTO
@@ -57,35 +54,35 @@ class CreateInvoiceRequest extends TseDTO
      * Example: branch_01.
      */
     #[MapTo('sender_branch_code')]
-    public ?string $senderBranchCode = null;
+    public ?string $senderBranchCode;
     /**
      * Байгууллагын салбарын мэдээлэл.
      */
     #[MapTo('sender_branch_data')]
-    public ?SenderBranchData $senderBranchData = null;
+    public ?SenderBranchData $senderBranchData;
     /**
      * Байгууллагын ажилтаны давтагдашгүй код
      * Example: staff_01.
      */
     #[MapTo('sender_staff_code')]
-    public ?string $senderStaffCode = null;
+    public ?string $senderStaffCode;
     /**
      * Байгууллагын ажилтаны мэдээлэл.
      */
     #[MapTo('sender_staff_data')]
-    public mixed $senderStaffData = null;
+    public mixed $senderStaffData;
     /**
      * Байгууллага өөрсдийн ашиглаж буй терминалаа давхцалгүй дугаарласан код
      * Example: terminal_01.
      */
     #[MapTo('sender_terminal_code')]
-    public ?string $senderTerminalCode = null;
+    public ?string $senderTerminalCode;
     /**
      * Картын гүйлгээ хүлээн авах боломжтой банкнаас үүсгэж өгсөн терминал код
      * Example: terminal_01.
      */
     #[MapTo('sender_terminal_data')]
-    public ?SenderTerminalData $senderTerminalData = null;
+    public ?SenderTerminalData $senderTerminalData;
     /**
      * Нэхэмжлэл хүлээн авагчийн мэдээлэл.
      * Example:
@@ -97,32 +94,30 @@ class CreateInvoiceRequest extends TseDTO
      * }.
      */
     #[MapTo('invoice_receiver_data')]
-    public ?InvoiceReceiverData $invoiceReceiverData = null;
+    public ?InvoiceReceiverData $invoiceReceiverData;
     /**
      * Нэхэмжлэлийн хүчингүй болох огноо.
      */
     #[MapTo('invoice_due_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $invoiceDueDate = null;
+    public ?CarbonImmutable $invoiceDueDate;
     /**
      * Хугацаа хэтэрсэн ч төлж болох эсэх
      * Example: FALSE.
      */
     #[MapTo('enable_expiry')]
-    public ?bool $enableExpiry = null;
+    public ?bool $enableExpiry;
     /**
      * Нэхэмжлэхийн дуусах хугацаа
      * Example: Date.
      */
     #[MapTo('expiry_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $expiryDate = null;
+    public ?CarbonImmutable $expiryDate;
     /**
      * Нөат-ын тооцоолол
      * Example: FALSE.
      */
     #[MapTo('calculate_vat')]
-    public ?bool $calculateVat = null;
+    public ?bool $calculateVat;
     /**
      * ИБаримт үүсгүүлэх байгууллагын мэдээлэл
      *      1. Байгууллага бол байгууллагын регистерийн дугаар
@@ -132,7 +127,7 @@ class CreateInvoiceRequest extends TseDTO
      *          QR кодыг ашиглана.
      */
     #[MapTo('tax_customer_code')]
-    public ?string $taxCustomerCode = null;
+    public ?string $taxCustomerCode;
     /**
      * БТҮК код - Барааны Lines хоосон үед ашиглана
      * http://web.nso.mn/meta_sys1/files/angilal/Buteegdexuunii%20angilal.pdf.
@@ -140,7 +135,7 @@ class CreateInvoiceRequest extends TseDTO
      * Example: 83051.
      */
     #[MapTo('line_tax_code')]
-    public ?string $lineTaxCode = null;
+    public ?string $lineTaxCode;
     /**
      * Хэсэгчлэн төлбөр төлөхийн зөвшөөрсөн эсэх
      * true: Хувааж төлж болно
@@ -148,14 +143,14 @@ class CreateInvoiceRequest extends TseDTO
      * Example: FALSE.
      */
     #[MapTo('allow_partial')]
-    public ?bool $allowPartial = null;
+    public ?bool $allowPartial;
     /**
      * Төлөх хамгийн бага дүн.
      *
      * Example: 100.
      */
     #[MapTo('minimum_amount')]
-    public ?float $minimumAmount = null;
+    public ?float $minimumAmount;
     /**
      * Төлбөрийн дүнг өөрчилж болох эсэх
      * true: Өөрчилж болно
@@ -163,31 +158,31 @@ class CreateInvoiceRequest extends TseDTO
      * Example: FALSE.
      */
     #[MapTo('allow_exceed')]
-    public ?bool $allowExceed = null;
+    public ?bool $allowExceed;
     /**
      * Төлөх хамгийн их дүн.
      *
      * Example: 100.
      */
     #[MapTo('maximum_amount')]
-    public ?float $maximumAmount = null;
+    public ?float $maximumAmount;
     /**
      * Тэмдэглэл
      * Example: Тэмдэглэл.
      */
-    public ?string $note = null;
+    public ?string $note;
     /**
      * Гүйлгээний мөрүүд.
      *
      * @var ?array<Line>
      */
-    public ?array $lines = null;
+    public ?array $lines;
     /**
      * Мерчантын тодорхойлсон дансанд орлого хүлээн авна /Оператор эрхтэй байгууллага ашиглах/.
      *
      * @var ?array<Transaction>
      */
-    public ?array $transactions = null;
+    public ?array $transactions;
     /**
      * Автомат төлөлт зөвшөөрөх эсэх /картын гүйлгээнд хамаарна/.
      * true: Автоматаар төлнө
@@ -195,16 +190,16 @@ class CreateInvoiceRequest extends TseDTO
      * Example: FALSE.
      */
     #[MapTo('allow_subscribe')]
-    public ?bool $allowSubscribe = null;
+    public ?bool $allowSubscribe;
     /**
      * Автоматаар төлөгдөх хугацаа.
      * Жишээ: 1D.
      */
     #[MapTo('subscription_interval')]
-    public ?string $subscriptionInterval = null;
+    public ?string $subscriptionInterval;
     /**
      * Автоматаар төлөгдсөн эсэх талаар мэдэгдэл авах URL.
      */
     #[MapTo('subscription_webhook')]
-    public ?string $subscriptionWebhook = null;
+    public ?string $subscriptionWebhook;
 }

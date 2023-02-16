@@ -1,10 +1,10 @@
 {
-    "name": "qpaymn/api",
+    "name": "tsetsee/qpay-php-api",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Qpay\\Api\\": "src/"
+            "Tsetsee\\Qpay\\Api\\": "src/"
         }
     },
     "authors": [
@@ -17,11 +17,10 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.5",
-        "spatie/data-transfer-object": "^3.9",
         "nesbot/carbon": "^2.62",
         "gmponos/guzzle_logger": "^2.2",
         "psr/log": "^3.0",
-        "tsetsee/php-dto": "^0.1.2",
+        "tsetsee/php-dto": "^3.1.0",
         "tsetsee/tse-guzzle": "^0.0.2"
     },
     "require-dev": {

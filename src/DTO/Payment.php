@@ -1,19 +1,15 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
 use Carbon\CarbonImmutable;
-use Qpay\Api\Enum\Currency;
-use Qpay\Api\Enum\DateFormat;
-use Qpay\Api\Enum\ObjectType;
-use Qpay\Api\Enum\PaymentStatus;
-use Qpay\Api\Enum\PaymentType;
-use Qpay\Api\Enum\TransactionType;
-use Spatie\DataTransferObject\Attributes\CastWith;
-use Spatie\DataTransferObject\Attributes\MapFrom;
-use Spatie\DataTransferObject\Casters\EnumCaster;
-use Tsetsee\DTO\Casters\CarbonCaster;
+use Tsetsee\DTO\Attributes\MapFrom;
 use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\Qpay\Api\Enum\Currency;
+use Tsetsee\Qpay\Api\Enum\ObjectType;
+use Tsetsee\Qpay\Api\Enum\PaymentStatus;
+use Tsetsee\Qpay\Api\Enum\PaymentType;
+use Tsetsee\Qpay\Api\Enum\TransactionType;
 
 class Payment extends TseDTO
 {
@@ -33,7 +29,6 @@ class Payment extends TseDTO
      * Example: PAID.
      */
     #[MapFrom('payment_status')]
-    #[CastWith(EnumCaster::class, enumType: PaymentStatus::class)]
     public PaymentStatus $paymentStatus;
     /**
      * Гүйлгээний нийт дүн
@@ -46,27 +41,25 @@ class Payment extends TseDTO
      * Example: 100.0.
      */
     #[MapFrom('trx_fee')]
-    public ?float $trxFee = null;
+    public ?float $trxFee;
     /**
      * Гүйлгээний шимтгэлийн дүн
      * Example: 100.0.
      */
     #[MapFrom('payment_fee')]
-    public ?float $paymentFee = null;
+    public ?float $paymentFee;
     /**
      * Гүйлгээний валют
      * Example: MNT.
      */
     #[MapFrom('payment_currency')]
-    #[CastWith(EnumCaster::class, enumType: Currency::class)]
     public Currency $paymentCurrency;
     /**
      * Гүйлгээ хийгдсэн хугацаа
      * Example: null.
      */
     #[MapFrom('payment_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $paymentDate = null;
+    public ?CarbonImmutable $paymentDate;
     /**
      * Гүйлгээ хийгдсэн воллет, апп
      * Example: Хаан банк апп
@@ -78,40 +71,35 @@ class Payment extends TseDTO
      * Example: P2P.
      */
     #[MapFrom('payment_type')]
-    #[CastWith(EnumCaster::class, enumType: PaymentType::class)]
-    public ?PaymentType $paymentType = null;
+    public ?PaymentType $paymentType;
     /**
      * Гүйлгээний төрөл
      * Example: P2P.
      */
     #[MapFrom('transaction_type')]
-    #[CastWith(EnumCaster::class, enumType: TransactionType::class)]
-    public ?TransactionType $transactionType = null;
+    public ?TransactionType $transactionType;
     /**
      * Example: INVOICE.
      */
     #[MapFrom('object_type')]
-    #[CastWith(EnumCaster::class, enumType: ObjectType::class)]
-    public ?ObjectType $objectType = null;
+    public ?ObjectType $objectType;
     /**
      * Example: d50f49f2-9032-4a74-8929-530531f28f63.
      */
     #[MapFrom('object_id')]
-    public ?string $objectId = null;
+    public ?string $objectId;
     /**
      * Subscription payment холболт хийгдсэн үед ажиллана
      * Example: null.
      */
     #[MapFrom('next_payment_date')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $nextPaymentDate = null;
+    public ?CarbonImmutable $nextPaymentDate;
     /**
      * Subscription payment холболт хийгдсэн үед ажиллана
      * Example: null.
      */
     #[MapFrom('next_payment_datetime')]
-    #[CastWith(CarbonCaster::class, format: DateFormat::ISO8601U)]
-    public ?CarbonImmutable $nextPaymentDateTime = null;
+    public ?CarbonImmutable $nextPaymentDateTime;
     /**
      * Wallet буюу картын гүйлгээ хүлээн авах үед ирнэ
      * Example:   {

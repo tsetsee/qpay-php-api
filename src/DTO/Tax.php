@@ -1,12 +1,12 @@
 <?php
 
-namespace Qpay\Api\DTO;
+namespace Tsetsee\Qpay\Api\DTO;
 
-use Qpay\Api\Enum\TaxCode;
-use Spatie\DataTransferObject\Attributes\MapTo;
-use Spatie\DataTransferObject\DataTransferObject;
+use Tsetsee\DTO\Attributes\MapTo;
+use Tsetsee\DTO\DTO\TseDTO;
+use Tsetsee\Qpay\Api\Enum\TaxCode;
 
-class Tax extends DataTransferObject
+class Tax extends TseDTO
 {
     /**
      * Утга

@@ -1,18 +1,21 @@
 <?php
 
-namespace Qpay\Api;
+namespace Tsetsee\Qpay\Api;
 
 use Carbon\Carbon;
 use Exception;
-use Qpay\Api\DTO\AuthTokenDTO;
-use Qpay\Api\DTO\CheckPaymentRequest;
-use Qpay\Api\DTO\CheckPaymentResponse;
-use Qpay\Api\DTO\CreateInvoiceRequest;
-use Qpay\Api\DTO\CreateInvoiceResponse;
-use Qpay\Api\DTO\GetInvoiceResponse;
-use Qpay\Api\DTO\Payment;
-use Qpay\Api\Enum\BaseUrl;
-use Qpay\Api\Enum\Env;
+use Psr\Http\Message\ResponseInterface;
+use Tsetsee\Qpay\Api\DTO\AuthTokenDTO;
+use Tsetsee\Qpay\Api\DTO\CheckPaymentRequest;
+use Tsetsee\Qpay\Api\DTO\CheckPaymentResponse;
+use Tsetsee\Qpay\Api\DTO\CreateInvoiceRequest;
+use Tsetsee\Qpay\Api\DTO\CreateInvoiceResponse;
+use Tsetsee\Qpay\Api\DTO\ErrorDTO;
+use Tsetsee\Qpay\Api\DTO\GetInvoiceResponse;
+use Tsetsee\Qpay\Api\DTO\Payment;
+use Tsetsee\Qpay\Api\Enum\BaseUrl;
+use Tsetsee\Qpay\Api\Enum\Env;
+use Tsetsee\Qpay\Api\Exception\BadResponseException;
 use Tsetsee\TseGuzzle\TseGuzzle;
 
 class QPayApi extends TseGuzzle
@@ -38,11 +41,11 @@ class QPayApi extends TseGuzzle
      */
     public function getAuthToken(): AuthTokenDTO
     {
-        $response = $this->client->post('auth/token', [
+        $response = $this->sendRequest('POST', 'auth/token', [
             'auth' => [$this->username, $this->password],
         ]);
 
-        return new AuthTokenDTO((array) json_decode((string) $response->getBody(), true));
+        return AuthTokenDTO::from($response->getBody(), 'json');
     }
 
     /**
@@ -50,13 +53,13 @@ class QPayApi extends TseGuzzle
      */
     public function refreshAuthToken(string $refreshToken): AuthTokenDTO
     {
-        $response = $this->client->post('auth/refresh', [
+        $response = $this->sendRequest('POST', 'auth/refresh', [
             'headers' => [
                 'Authorization' => 'Bearer '.$refreshToken,
             ],
         ]);
 
-        return new AuthTokenDTO((array) json_decode((string) $response->getBody(), true));
+        return AuthTokenDTO::from($response->getBody(), 'json');
     }
 
     /**
@@ -65,12 +68,12 @@ class QPayApi extends TseGuzzle
      */
     public function createInvoice(CreateInvoiceRequest $request): CreateInvoiceResponse
     {
-        $response = $this->client->post('invoice', [
+        $response = $this->sendRequest('POST', 'invoice', [
             'oauth2' => true,
             'json' => $request->toArray(),
         ]);
 
-        return new CreateInvoiceResponse((array) json_decode((string) $response->getBody(), true));
+        return CreateInvoiceResponse::from($response->getBody(), 'json');
     }
 
     /**
@@ -78,11 +81,11 @@ class QPayApi extends TseGuzzle
      */
     public function getInvoice(string $invoiceId): GetInvoiceResponse
     {
-        $response = $this->client->get('invoice/'.$invoiceId, [
+        $response = $this->sendRequest('GET', 'invoice/'.$invoiceId, [
             'oauth2' => true,
         ]);
 
-        return new GetInvoiceResponse((array) json_decode((string) $response->getBody(), true));
+        return GetInvoiceResponse::from($response->getBody(), 'json');
     }
 
     /**
@@ -90,7 +93,7 @@ class QPayApi extends TseGuzzle
      */
     public function cancelInvoice(string $invoiceId): void
     {
-        $this->client->delete('invoice/'.$invoiceId, [
+        $this->sendRequest('DELETE', 'invoice/'.$invoiceId, [
             'oauth2' => true,
         ]);
     }
@@ -101,12 +104,12 @@ class QPayApi extends TseGuzzle
      */
     public function checkPayment(CheckPaymentRequest $request): CheckPaymentResponse
     {
-        $response = $this->client->post('payment/check', [
+        $response = $this->sendRequest('POST', 'payment/check', [
             'oauth2' => true,
             'json' => $request->toArray(),
         ]);
 
-        return new CheckPaymentResponse((array) json_decode((string) $response->getBody(), true));
+        return CheckPaymentResponse::from($response->getBody(), 'json');
     }
 
     /**
@@ -116,11 +119,11 @@ class QPayApi extends TseGuzzle
      */
     public function getPayment(string $paymentId): Payment
     {
-        $response = $this->client->get('payment/'.$paymentId, [
+        $response = $this->sendRequest('GET', 'payment/'.$paymentId, [
             'oauth2' => true,
         ]);
 
-        return new Payment((array) json_decode((string) $response->getBody(), true));
+        return Payment::from($response->getBody(), 'json');
     }
 
     /**
@@ -129,7 +132,7 @@ class QPayApi extends TseGuzzle
      */
     public function cancelPayment(string $paymentId, string $note): void
     {
-        $this->client->delete('payment/cancel/'.$paymentId, [
+        $this->sendRequest('DELETE', 'payment/cancel/'.$paymentId, [
             'oauth2' => true,
             'json' => [
                 'callback_url' => 'https://qpay.mn/payment/result?payment_id='.$paymentId,
@@ -144,7 +147,7 @@ class QPayApi extends TseGuzzle
      */
     public function refundPayment(string $paymentId, string $note): void
     {
-        $this->client->delete('payment/refund/'.$paymentId, [
+        $this->sendRequest('DELETE', 'payment/refund/'.$paymentId, [
             'oauth2' => true,
             'json' => [
                 'callback_url' => 'https://qpay.mn/payment/result?payment_id='.$paymentId,
@@ -185,5 +188,21 @@ class QPayApi extends TseGuzzle
     {
         return null !== $this->authToken
             && Carbon::now()->lt($this->authToken->refreshExpiresIn);
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    private function sendRequest(string $method, string $path, array $options = []): ResponseInterface
+    {
+        $response = $this->client->request($method, $path, $options);
+
+        $errorDTO = ErrorDTO::from($response->getBody(), 'json');
+
+        if (isset($errorDTO->error)) {
+            throw new BadResponseException($errorDTO);
+        }
+
+        return $response;
     }
 }
