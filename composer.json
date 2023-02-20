@@ -17,7 +17,6 @@
     "require": {
         "php": "^8.1",
         "nesbot/carbon": "^2.62",
-        "psr/log": "^3.0",
         "tsetsee/php-dto": "^3.1.0",
         "tsetsee/tse-guzzle": "^0.0.2"
     },
