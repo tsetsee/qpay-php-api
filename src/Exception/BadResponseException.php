@@ -2,13 +2,11 @@
 
 namespace Tsetsee\Qpay\Api\Exception;
 
-use Exception;
-use Throwable;
 use Tsetsee\Qpay\Api\DTO\ErrorDTO;
 
-class BadResponseException extends Exception
+class BadResponseException extends \Exception
 {
-    public function __construct(public ErrorDTO $error, Throwable|null $throwable = null)
+    public function __construct(public ErrorDTO $error, \Throwable|null $throwable = null)
     {
         $message = json_encode($error->toArray());
 

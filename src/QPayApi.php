@@ -3,7 +3,6 @@
 namespace Tsetsee\Qpay\Api;
 
 use Carbon\Carbon;
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Tsetsee\Qpay\Api\DTO\AuthTokenDTO;
 use Tsetsee\Qpay\Api\DTO\CheckPaymentRequest;
@@ -167,7 +166,7 @@ class QPayApi extends TseGuzzle
         }
 
         if (null === $this->authToken) {
-            throw new Exception('cannot get access token');
+            throw new \Exception('cannot get access token');
         }
 
         return $this->authToken->accessToken;
