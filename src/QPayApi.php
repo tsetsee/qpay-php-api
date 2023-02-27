@@ -31,6 +31,8 @@ class QPayApi extends TseGuzzle
         array $options = [],
     ) {
         $options['base_uri'] = (Env::PROD === $env ? BaseUrl::PROD : BaseUrl::SANDBOX)->value;
+        $options['oauth2'] = 'bearer';
+
         parent::__construct($options);
     }
 
