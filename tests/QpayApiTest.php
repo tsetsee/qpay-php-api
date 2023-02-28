@@ -43,7 +43,10 @@ it('creates invoice', function () use ($api) {
         ])
     );
 
-    expect($response)->not()->toBeNull();
+    expect($response)
+        ->not()->toBeNull()
+        ->urls->toHaveCount(13)
+    ;
 
     return $response;
 })->depends('it extends accessToken');
