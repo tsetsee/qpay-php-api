@@ -18,7 +18,7 @@ class CheckPaymentResponse extends TseDTO
      * Example: 100.
      */
     #[MapFrom('paid_amount')]
-    public float $paidAmount;
+    public ?float $paidAmount = null;
 
     /**
      * Гүйлгээний мөр
