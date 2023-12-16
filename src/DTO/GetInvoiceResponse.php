@@ -41,7 +41,7 @@ class GetInvoiceResponse extends TseDTO
      * Example: 100.
      */
     #[MapFrom('total_amount')]
-    public float $totalAmount;
+    public string $totalAmount;
     /**
      * Example: 100.
      */
