@@ -1,44 +1,44 @@
 {
-    "name": "tsetsee/qpay-php-api",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Tsetsee\\Qpay\\Api\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Tsetsee",
-            "email": "tsetsee.yugi@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": "^8.1",
-        "nesbot/carbon": "^2.62",
-        "lodipay/tse-guzzle": "^1.0",
-        "lodipay/php-dto": "^1.0"
-    },
-    "require-dev": {
-        "phpstan/phpstan": "^1.8",
-        "pestphp/pest": "^1.22",
-        "friendsofphp/php-cs-fixer": "^3.11",
-        "monolog/monolog": "^3.2"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
-    "scripts": {
-        "fixer": "php-cs-fixer fix",
-        "phpstan": "phpstan analyze",
-        "unit-test": "pest",
-        "test": [
-            "@fixer",
-            "@phpstan",
-            "@unit-test"
-        ]
+  "name": "lodipay/qpay-php-api",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Tsetsee\\Qpay\\Api\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Tsetsee",
+      "email": "tsetsee.yugi@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^8.1",
+    "nesbot/carbon": "^2.62",
+    "lodipay/tse-guzzle": "^1.0",
+    "lodipay/php-dto": "^1.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.8",
+    "pestphp/pest": "^1.22",
+    "friendsofphp/php-cs-fixer": "^3.11",
+    "monolog/monolog": "^3.2"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "scripts": {
+    "fixer": "php-cs-fixer fix",
+    "phpstan": "phpstan analyze",
+    "unit-test": "pest",
+    "test": [
+      "@fixer",
+      "@phpstan",
+      "@unit-test"
+    ]
+  }
 }
